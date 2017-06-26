@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}New post{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block content %}
+ <form action="/newpost" method="post">
+        <table>
+           <tr> 
+            <td> <label for="title">Title:</label> </td>
+            <td> <input id="title" type="text" name="title" value={{tmpl_title}}> 
+           </td>
+           </tr>
+           <tr>
+            <td> <label for="maintext">Text:</label> </td>
+            <td> <input id="maintext" type="text" name="maintext" value={{maintext}}>
+            </td>
+           </tr>
+        </table> 
+            <input type="submit" />
+        </form>
+{% endblock %}
