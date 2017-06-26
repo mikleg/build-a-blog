@@ -18,11 +18,10 @@ def get_post(number):
     global posts
     if number == "all":
         return posts
-   # elif number >= 0 and number < len(posts):
-    else:
+    elif number >= 0 and number < len(posts):
         return posts[number]
-  #  else:
-    #    return ["error_index","error"]
+    else:
+        return ["error_index","error"]
 
 def add_post(mytitle, mytext):
     global posts
@@ -39,8 +38,6 @@ def blog():
 @app.route("/newpost")
 def newpost():
     template = jinja_env.get_template('newpost_tmpl.html')
-    #main_url = url_for("blog")
-    #add_np_url = url_for("newpost")
     return template.render()
 
 @app.route("/newpost", methods=['POST'])
@@ -48,7 +45,9 @@ def form_post():
     title = request.form['title']
     maintext = request.form['maintext']
     add_post(title, maintext)
-    return redirect('/blog')
+    template = jinja_env.get_template('singl_post_tmpl.html')
+    return template.render(tmpl_title=title, maintext=maintext)
+    
 
 @app.route('/post')
 def show_post():
