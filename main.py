@@ -1,13 +1,34 @@
 from flask import Flask, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 import os
 import jinja2
-import re
+import cgi
+
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
 
+
+
 app = Flask(__name__)
 app.config['DEBUG'] = True
+# Note: the connection string after :// contains the following info:
+# user:password@server:portNumber/databaseName 
+
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://build-a-blog:123456@localhost:8889/build-a-blog'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:123456@localhost:8889/build-a-blog'
+app.config['SQLALCHEMY_ECHO'] = True
+db = SQLAlchemy(app)
+
+class Posts(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120))
+    text = db.Column(db.Text)
+
+    def __init__(self, name):
+        self.name = name
+        
 posts=[["heading1","text1ext1",0],["heading2","text2 text2",1]] #posts -- list of all posts (for debugging only)
 @app.route("/")
 def index():
@@ -15,11 +36,26 @@ def index():
     return template.render()
 
 def get_post(number):
-    global posts
+    mylist = [[]]
+    i = 0
+    q = Posts.query.all()
+    listid = []
+    for elem in q:
+        listid.append(elem.id-1)
+
+    maxid = max(listid)
+
     if number == "all":
-        return posts
-    elif number >= 0 and number < len(posts):
-        return posts[number]
+        for elem in q:
+            mylist.append([elem.title, elem.text, elem.id-1])
+            i+=1
+        return mylist
+    elif number >= 0 and number <= maxid:
+        q = Posts.query.get(number+1)
+        mylist[0] = q.title
+        mylist[1] = q.text
+        mylist[2] = q.id
+        return mylist
     else:
         return ["error_index","error"]
 
@@ -57,5 +93,5 @@ def show_post():
     template = jinja_env.get_template('singl_post_tmpl.html')
     return template.render(tmpl_title=title, maintext=maintext)
 
-
-app.run()
+if __name__ == '__main__':
+    app.run()
