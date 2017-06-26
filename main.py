@@ -8,7 +8,7 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), aut
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-posts=[["heading1","text1ext1"],["heading2","text2 text2"]] #posts -- list of all posts (for debugging only)
+posts=[["heading1","text1ext1",0],["heading2","text2 text2",1]] #posts -- list of all posts (for debugging only)
 @app.route("/")
 def index():
     template = jinja_env.get_template('error_login_form.html')
@@ -27,7 +27,7 @@ def get_post(number):
 def add_post(mytitle, mytext):
     global posts
     
-    posts.append([mytitle, mytext])
+    posts.append([mytitle, mytext, len(posts)])
 
 # The main page
 @app.route("/blog")

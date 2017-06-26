@@ -9,9 +9,11 @@
 {% block content %}
     <h1>My blog</h1>
     <ul id="posts">
-    {% for post in post_list %}
-        <li><p> {{ post[0] }}</p>
-            <p> {{ post[1] }}</p>
+    
+    {% for pst in post_list %}
+   
+        <li><p> {{ pst[0] }}</p>
+            <p> {{ pst[1] }}</p>
         </li>
     {% endfor %}
     </ul>
