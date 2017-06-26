@@ -15,7 +15,6 @@ app.config['DEBUG'] = True
 # Note: the connection string after :// contains the following info:
 # user:password@server:portNumber/databaseName 
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://build-a-blog:123456@localhost:8889/build-a-blog'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:123456@localhost:8889/build-a-blog'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
@@ -48,21 +47,21 @@ def get_post(number):
     if number == "all":
         for elem in q:
             mylist.append([elem.title, elem.text, elem.id-1])
-            i+=1
+        mylist.pop(0)
         return mylist
     elif number >= 0 and number <= maxid:
         q = Posts.query.get(number+1)
-        mylist[0] = q.title
-        mylist[1] = q.text
-        mylist[2] = q.id
+        mylist[0] = [q.title, q.text, q.id]
         return mylist
     else:
         return ["error_index","error"]
 
 def add_post(mytitle, mytext):
-    global posts
-    
-    posts.append([mytitle, mytext, len(posts)])
+    messg = Posts(mytitle)
+    messg.title = mytitle
+    messg.text = mytext
+    db.session.add(messg)
+    db.session.commit()
 
 # The main page
 @app.route("/blog")
@@ -88,8 +87,8 @@ def form_post():
 @app.route('/post')
 def show_post():
     id = int(request.args.get("id"))
-    title = get_post(id)[0]
-    maintext = get_post(id)[1]
+    title = get_post(id)[0][0]
+    maintext = get_post(id)[0][1]
     template = jinja_env.get_template('singl_post_tmpl.html')
     return template.render(tmpl_title=title, maintext=maintext)
 
