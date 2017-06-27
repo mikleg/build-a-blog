@@ -1,8 +1,8 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 import os
 import jinja2
-import cgi
+
 
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -13,7 +13,7 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), aut
 app = Flask(__name__)
 app.config['DEBUG'] = True
 # Note: the connection string after :// contains the following info:
-# user:password@server:portNumber/databaseName 
+# user:password@server:portNumber/databaseName
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:123456@localhost:8889/build-a-blog'
 app.config['SQLALCHEMY_ECHO'] = True
@@ -27,7 +27,7 @@ class Posts(db.Model):
 
     def __init__(self, name):
         self.name = name
-        
+
 posts=[["heading1","text1ext1",0],["heading2","text2 text2",1]] #posts -- list of all posts (for debugging only)
 @app.route("/")
 def index():
@@ -54,7 +54,7 @@ def get_post(number):
         mylist[0] = [q.title, q.text, q.id]
         return mylist
     else:
-        return ["error_index","error"]
+        return ["error_index", "error"]
 
 def add_post(mytitle, mytext):
     messg = Posts(mytitle)

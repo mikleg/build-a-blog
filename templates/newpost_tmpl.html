@@ -4,6 +4,7 @@
     {{ super() }}
     <style type="text/css">
         .important { color: #336699; }
+        #maintext {height: 80;}
     </style>
 {% endblock %}
 {% block content %}
@@ -16,7 +17,8 @@
            </tr>
            <tr>
             <td> <label for="maintext">Text:</label> </td>
-            <td> <input id="maintext" type="textarea" name="maintext" value={{maintext}}>
+            <td> <textarea id="maintext" type="textarea" rows="10" cols="70" name="maintext"> {{maintext}} </textarea>
+            
             </td>
            </tr>
         </table> 

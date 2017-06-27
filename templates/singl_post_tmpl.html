@@ -4,11 +4,12 @@
     {{ super() }}
     <style type="text/css">
         .important { color: #336699; }
+        h2{color: red; }
     </style>
 {% endblock %}
 {% block content %}
-    <h1>{{tmpl_title}}</h1>
+    <h2>{{tmpl_title}}</h2>
         <br>
-        <p>{{maintext}}</p>
+        <textarea>{{maintext}}</textarea>
 {% endblock %}
 

@@ -3,7 +3,7 @@
 {% block head %}
     {{ super() }}
     <style type="text/css">
-        .important { color: #336699; }
+       p a{color: red; font-size: large;}
     </style>
 {% endblock %}
 {% block content %}
@@ -12,7 +12,7 @@
     
     {% for pst in post_list %}
    
-        <li><p> <a href="/post?id={{ pst[2] }}">{{ pst[0] }}</a></p>
+        <li><p > <a id= "tile" href="/post?id={{ pst[2] }}">{{ pst[0] }}</a></p>
             <p> {{ pst[1] }}</p>
         </li>
     {% endfor %}
